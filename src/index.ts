@@ -1,4 +1,4 @@
-import { Application, Sprite } from 'pixi.js'
+import { Application, Loader, Sprite } from 'pixi.js'
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -9,11 +9,25 @@ const app = new Application({
 	height: 480
 });
 
-const clampy: Sprite = Sprite.from("clampy.png");
+//- Agregar loader para precargar imagenes
+Loader.shared.add({url: "turtle.png", name:"myturtle"});
+Loader.shared.add({url: "clampy.png", name: "clampy"});
 
-clampy.anchor.set(0.5);
+//Arrow Functions - Cuando termine de descargar las imagenes, ejecuta esta funcion
+Loader.shared.onComplete.add(()=>{
+ //-Agregar imagen
+ const clampy: Sprite = Sprite.from("myturtle");
 
-clampy.x = 300;
-clampy.y = 300;
+ console.log("Hola mundo!", clampy.width, clampy.height);
 
-app.stage.addChild(clampy);
+ clampy.anchor.set(0.1);
+
+ clampy.x = 0;
+ clampy.y = 0.5;
+
+ app.stage.addChild(clampy);
+
+});
+
+Loader.shared.load();
+
